@@ -8,8 +8,8 @@ export interface GraphNode {
 
 export interface GraphEdge {
   id: string
-  source: string   // 'ENTREPOT' ou id du point
-  target: string   // id du point
+  source: string   
+  target: string   
   distance: number // km
 }
 

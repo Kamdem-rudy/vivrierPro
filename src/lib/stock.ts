@@ -1,32 +1,4 @@
 // src/lib/stock.ts
-// ═══════════════════════════════════════════════════════════════════
-// SERVICE DE GESTION DU STOCK AVEC VERROUILLAGE OPTIMISTE
-// ═══════════════════════════════════════════════════════════════════
-//
-// PROBLÈME DE CONCURRENCE :
-//   Utilisateur A lit stock=5, Utilisateur B lit stock=5
-//   A commande 5 → stock=0   |   B commande 5 → stock=-5 ❌
-//
-// SOLUTION — Verrouillage Optimiste (Optimistic Locking) :
-//   Chaque ligne Stock a un champ `version` (entier).
-//   À la lecture : on mémorise la version courante V.
-//   À l'écriture : UPDATE ... WHERE version = V AND quantite >= demande
-//   Si 0 lignes affectées → quelqu'un d'autre a modifié → on retry.
-//   Avantage : pas de verrou bloquant, très performant en lecture.
-//
-// SCHÉMA DE LA TRANSACTION :
-//
-//   [Lecture]  stock = SELECT * FROM Stock WHERE produitId = X
-//              version = stock.version  (ex: 42)
-//              dispo   = stock.quantiteDisponible - stock.quantiteReservee
-//
-//   [Écriture] UPDATE Stock
-//              SET quantiteReservee += quantite, version = 43
-//              WHERE produitId = X AND version = 42   ← vérif atomique
-//                AND (quantiteDisponible - quantiteReservee) >= quantite
-//
-//   [Résultat] 0 lignes affectées → CONFLIT → retry (max 3 fois)
-//              1 ligne affectée  → SUCCÈS → créer la commande
 
 import { prisma } from '@/lib/prisma'
 import { TypeMouvement } from '@prisma/client'
@@ -48,7 +20,7 @@ export interface StockInfo {
 
 export interface ReservationResult {
   success: true
-  nouvelleVersionStock: number
+  nouvelleVersion: number
   quantiteLibreRestante: number
 }
 
@@ -134,11 +106,7 @@ export async function reserverStock(
     }
 
     // ── ÉTAPE 2 : Transaction atomique avec vérification de version ───────────
-    //
-    // La clé : updateMany avec WHERE version = stockVersion ET quantite libre >= demande
-    // Si un autre processus a modifié le stock entre la lecture et l'écriture,
-    // la version aura changé → 0 lignes affectées → on retry
-    //
+   
     try {
       const stockVersionLue = stock.version
       const nouvelleVersion = stockVersionLue + 1

@@ -1,5 +1,4 @@
 // src/app/api/auth/[...nextauth]/route.ts
-// ✅ N'exporte QUE GET et POST — pas authOptions
 import NextAuth from 'next-auth'
 import { authOptions } from '@/lib/auth'
 

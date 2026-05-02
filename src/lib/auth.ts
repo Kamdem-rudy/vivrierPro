@@ -1,6 +1,4 @@
 // src/lib/auth.ts
-// authOptions séparé du route handler pour éviter l'erreur
-// "authOptions is not a valid export field in route"
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { prisma } from '@/lib/prisma'
