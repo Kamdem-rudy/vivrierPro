@@ -1,4 +1,5 @@
 // src/app/page.tsx
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/prisma'
 import { StatutCommande, StatutLivraison } from '@prisma/client'
 import GraphWrapper from '@/components/graph/GraphWrapper'
