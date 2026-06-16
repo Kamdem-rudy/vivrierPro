@@ -1,4 +1,5 @@
 // src/app/api/vehicules/route.ts
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 import { TypeVehicule } from '@prisma/client'

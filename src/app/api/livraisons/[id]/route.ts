@@ -1,4 +1,5 @@
-// src/app/api/livraisons/[id]/route.ts
+// src/app/api/livraisons/[id]/
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 import { StatutCommande, StatutLivraison } from '@prisma/client'

@@ -1,4 +1,5 @@
 // src/app/api/graphe/route.ts
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 import { dijkstra } from '@/lib/dijkstra'

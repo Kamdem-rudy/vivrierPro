@@ -1,4 +1,5 @@
 // src/app/api/stock/route.ts
+export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { lireStocks, approvisionnerStock } from '@/lib/stock'
 import { prisma } from '@/lib/prisma'
